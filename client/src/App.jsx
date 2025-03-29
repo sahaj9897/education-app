@@ -5,8 +5,8 @@ function App() {
 
   return (
     <>
-      <div>
-          
+      <div className="text-amber-200">
+          fierfjeo
       </div>
     </>
   )
