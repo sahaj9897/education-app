@@ -21,5 +21,5 @@ app.use(cors({
 app.use("/api/v1/user" , userRoute);
 
 app.listen(PORT ,()=>{
-    console.log(`app is litening on port ${PORT}`)
+    console.log(`app is listening on port ${PORT}`)
 })                                          
