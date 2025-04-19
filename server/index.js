@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./database/db.js";
 import userRoute from "./routes/user.routes.js";
-import courseRoute from "./routes/course.route.js"
+import courseRoute from "./routes/course.route.js";
+import mediaRoute from "./routes/media.route.js";
 import cors from "cors";
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cors({
     credentials:true
 }))
 
+app.use("/api/v1/media" , mediaRoute);
 app.use("/api/v1/user" , userRoute);
 app.use("/api/v1/course" , courseRoute);
 
