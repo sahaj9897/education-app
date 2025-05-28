@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useEditCourseMutation, useGetCourseByIdQuery } from "@/features/api/courseApi";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -16,14 +17,20 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
-import { Loader2 } from "lucide-react";
+} from "@/components/ui/select";
+import {
+  useEditCourseMutation,
+  useGetCourseByIdQuery,
+  usePublishCourseMutation
+} from "@/features/api/courseApi";
+
+ import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const CourseTab = () => {
-
+  
   const [input, setInput] = useState({
     courseTitle: "",
     subTitle: "",
@@ -33,12 +40,14 @@ const CourseTab = () => {
     coursePrice: "",
     courseThumbnail: "",
   });
-  
+
   const params = useParams();
   const courseId = params.courseId;
-  const { data: courseByIdData, isLoading: courseByIdLoading, refetch } =   useGetCourseByIdQuery(courseId);
-  const navigate = useNavigate();
-  const [previewThumbnail, setPreviewThumbnail] = useState("");
+  const { data: courseByIdData, isLoading: courseByIdLoading , refetch} =
+    useGetCourseByIdQuery(courseId);
+
+    const [publishCourse, {}] = usePublishCourseMutation();
+ 
   useEffect(() => {
     if (courseByIdData?.course) { 
         const course = courseByIdData?.course;
@@ -53,6 +62,9 @@ const CourseTab = () => {
       });
     }
   }, [courseByIdData]);
+
+  const [previewThumbnail, setPreviewThumbnail] = useState("");
+  const navigate = useNavigate();
 
   const [editCourse, { data, isLoading, isSuccess, error }] =
     useEditCourseMutation();
@@ -90,36 +102,49 @@ const CourseTab = () => {
     await editCourse({ formData, courseId });
   };
 
+  const publishStatusHandler = async (action) => {
+    try {
+      const response = await publishCourse({courseId, query:action});
+      if(response.data){
+        refetch();
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to publish or unpublish course");
+    }
+  }
+
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data.message || "Course updated.");
+      toast.success(data.message || "Course update.");
     }
     if (error) {
       toast.error(error.data.message || "Failed to update course");
     }
   }, [isSuccess, error]);
 
-  if (courseByIdLoading) return <Loader2 className="h-4 w-4 animate-spin"></Loader2>
-
-  const isPublished = false;
+  if(courseByIdLoading) return <h1>Loading...</h1>
+ 
   return (
     <Card>
-      <cardHeader className="flex flex-row justify between">
+      <CardHeader className="flex flex-row justify-between">
         <div>
-          <cardTitle> Basic course info</cardTitle>
+          <CardTitle>Basic Course Information</CardTitle>
           <CardDescription>
-            make change to ur course here ,click save when u are done
+            Make changes to your courses here. Click save when you're done.
           </CardDescription>
         </div>
         <div className="space-x-2">
-          <Button>{isPublished ? "unpublished" : "publish"}</Button>
-          <Button> Remove Course</Button>
+          <Button disabled={courseByIdData?.course.lectures.length === 0} variant="outline" onClick={()=> publishStatusHandler(courseByIdData?.course.isPublished ? "false" : "true")}>
+            {courseByIdData?.course.isPublished ? "Unpublished" : "Publish"}
+          </Button>
+          <Button>Remove Course</Button>
         </div>
-      </cardHeader>
+      </CardHeader>
       <CardContent>
         <div className="space-y-4 mt-5">
           <div>
-            <Label> Title</Label>
+            <Label>Title</Label>
             <Input
               type="text"
               name="courseTitle"
@@ -129,13 +154,13 @@ const CourseTab = () => {
             />
           </div>
           <div>
-            <Label> subTitle</Label>
+            <Label>Subtitle</Label>
             <Input
               type="text"
               name="subTitle"
               value={input.subTitle}
               onChange={changeEventHandler}
-              placeholder="Fullstack developer"
+              placeholder="Ex. Become a Fullstack developer from zero to hero in 2 months"
             />
           </div>
           <div>
@@ -145,7 +170,10 @@ const CourseTab = () => {
           <div className="flex items-center gap-5">
             <div>
               <Label>Category</Label>
-              <Select onValueChange={selectCategory}>
+              <Select
+                defaultValue={input.category}
+                onValueChange={selectCategory}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
@@ -175,62 +203,62 @@ const CourseTab = () => {
             <div>
               <Label>Course Level</Label>
               <Select
-                value={input.courseLevel}
+                defaultValue={input.courseLevel}
                 onValueChange={selectCourseLevel}
               >
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select level" />
+                  <SelectValue placeholder="Select a course level" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Levels</SelectLabel>
+                    <SelectLabel>Course Level</SelectLabel>
                     <SelectItem value="Beginner">Beginner</SelectItem>
-                    <SelectItem value="Intermediate">Intermediate</SelectItem>
-                    <SelectItem value="Advanced">Advanced</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Advance">Advance</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label>price in INR</Label>
+              <Label>Price in (INR)</Label>
               <Input
                 type="number"
                 name="coursePrice"
                 value={input.coursePrice}
                 onChange={changeEventHandler}
                 placeholder="199"
-                classname="w-fit"
+                className="w-fit"
               />
             </div>
           </div>
           <div>
-            <Label> course thumbnail</Label>
+            <Label>Course Thumbnail</Label>
             <Input
               type="file"
               onChange={selectThumbnail}
-              accept="image/"
-              classname="w-fit"
+              accept="image/*"
+              className="w-fit"
             />
             {previewThumbnail && (
               <img
                 src={previewThumbnail}
-                className="h-32 my-2"
-                alt="course Thumbnail"
+                className="e-64 my-2"
+                alt="Course Thumbnail"
               />
             )}
           </div>
           <div>
             <Button onClick={() => navigate("/admin/course")} variant="outline">
-              cancel
+              Cancel
             </Button>
             <Button disabled={isLoading} onClick={updateCourseHandler}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  please wait
+                  Please wait
                 </>
               ) : (
-                "save"
+                "Save"
               )}
             </Button>
           </div>

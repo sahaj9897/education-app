@@ -41,15 +41,17 @@ const Navbar = () => {
       navigate("/login");
     }
   }, [isSuccess]);
-  
+
   return (
     <div className="h-16 dark:bg-[#020817] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-50">
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full px-4">
         <div className="flex items-center gap-2">
           <School size={30} />
-          <h1 className="hidden md:block font-extrabold text-2xl">
-            E-Learning
-          </h1>
+          <Link to="/">
+            <h1 className="hidden md:block font-extrabold text-2xl">
+              E-Learning
+            </h1>
+          </Link>
         </div>
         <div className="flex items-center gap-8">
           {user ? (
@@ -58,7 +60,7 @@ const Navbar = () => {
                 <button size="icon" className="rounded-full">
                   <Avatar className="cursor-pointer">
                     <AvatarImage
-                      src={user?.photoUrl||"https://github.com/shadcn.png"}
+                      src={user?.photoUrl || "https://github.com/shadcn.png"}
                       alt="@shadcn"
                     />
                     <AvatarFallback>CN</AvatarFallback>
@@ -69,22 +71,32 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem><Link to="my-learning">My learning</Link></DropdownMenuItem>
-                  <DropdownMenuItem><Link to = "profile">Edit profile</Link></DropdownMenuItem>
-                  <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="my-learning">My learning</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="profile">Edit profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logoutHandler}>
+                    Log out
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
                 {user?.role === "instructor" && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem><Link to="/admin/dashboard">Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/admin/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
-              <Button  onClick={() => navigate("/login")}>Signup</Button>
+              <Button variant="outline" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+              <Button onClick={() => navigate("/login")}>Signup</Button>
             </div>
           )}
 
@@ -103,7 +115,7 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNavbar = () => {
-    const role = "instructor";
+  const role = "instructor";
   return (
     <Sheet>
       <SheetTrigger asChild>
