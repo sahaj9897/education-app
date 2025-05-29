@@ -40,20 +40,21 @@ const AddCourse = () => {
     setCategory(value);
   }
   return (
-    <div className="flex-1 mx-10">
+    <div className="flex-1 mx-10 bg-[#BBFBFF] dark:bg-gray-800 p-4 rounded-2xl">
       <div className="mb-4">
         <h1 className="font-bold text-xl">
-          Lets add course, add some basic course details for your new course.
+          Lets add course and some basic course details for your new course.
         </h1>
         <p className="text-sm">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus,
           laborum!
         </p>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         <div>
-          <Label>Title</Label>
+          <Label className="mb-2">Title</Label>
           <Input
+            className="bg-[#cefafd] mt-0.5"
             type="text"
             value={courseTitle}
             onChange = {(e) => setCourseTitle(e.target.value)}
@@ -61,9 +62,9 @@ const AddCourse = () => {
           />
         </div>
         <div>
-          <Label>Category</Label>
+          <Label className="mb-2">Category</Label>
           <Select onValueChange={getSelectedCategory}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-[#cefafd]">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>

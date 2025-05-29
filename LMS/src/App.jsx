@@ -14,6 +14,7 @@ import AddCourse from "./pages/admin/course/AddCourse";
 import EditCourse from "./pages/admin/course/EditCourse";
 import CreateLecture from "./pages/admin/lecture/CreateLecture";
 import EditLecture from "./pages/admin/lecture/EditLecture";
+import { ThemeProvider } from "./components/ThemeProvider";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -77,7 +78,9 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <main>
+      <ThemeProvider>
       <RouterProvider router={appRouter} />
+      </ThemeProvider>
     </main>
   );
 }

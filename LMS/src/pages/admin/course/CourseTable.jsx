@@ -67,9 +67,9 @@ const CourseTable = () => {
   if(isLoading) return <h1>Loading...</h1>
  
   return (
-    <div>
-      <Button onClick={() => navigate(`create`)}>Create a new course</Button>
-      <Table>
+    <div className= "bg-[#BBFBFF] dark:bg-gray-800 flex-centre p-4 rounded-2xl" >
+      <Button className="p-4 mb-5"onClick={() => navigate(`create`)}>Create a new course</Button>
+      <Table >
         <TableCaption>A list of your recent courses.</TableCaption>
         <TableHeader>
           <TableRow>
