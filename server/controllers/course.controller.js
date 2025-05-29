@@ -1,7 +1,8 @@
-import {uploadMedia, deleteMediaFromCloudinary} from "../utils/cloudinary.js";
+ 
 import { Course } from "../models/course.model.js";
 import { Lecture } from "../models/lecture.model.js";
- 
+import {deleteMediaFromCloudinary, deleteVideoFromCloudinary, uploadMedia} from "../utils/cloudinary.js";
+
 export const createCourse = async (req,res) => {
     try {
         const {courseTitle, category} = req.body;
@@ -28,11 +29,71 @@ export const createCourse = async (req,res) => {
         })
     }
 }
+
+export const searchCourse = async (req,res) => {
+    try {
+        const {query = "", categories = [], sortByPrice =""} = req.query;
+        console.log(categories);
+        
+        // create search query
+        const searchCriteria = {
+            isPublished:true,
+            $or:[
+                {courseTitle: {$regex:query, $options:"i"}},
+                {subTitle: {$regex:query, $options:"i"}},
+                {category: {$regex:query, $options:"i"}},
+            ]
+        }
+
+        // if categories selected
+        if(categories.length > 0) {
+            searchCriteria.category = {$in: categories};
+        }
+
+        // define sorting order
+        const sortOptions = {};
+        if(sortByPrice === "low"){
+            sortOptions.coursePrice = 1;//sort by price in ascending
+        }else if(sortByPrice === "high"){
+            sortOptions.coursePrice = -1; // descending
+        }
+
+        let courses = await Course.find(searchCriteria).populate({path:"creator", select:"name photoUrl"}).sort(sortOptions);
+
+        return res.status(200).json({
+            success:true,
+            courses: courses || []
+        });
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+export const getPublishedCourse = async (_,res) => {
+    try {
+        const courses = await Course.find({isPublished:true}).populate({path:"creator", select:"name photoUrl"});
+        if(!courses){
+            return res.status(404).json({
+                message:"Course not found"
+            })
+        }
+        return res.status(200).json({
+            courses,
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message:"Failed to get published courses"
+        })
+    }
+}
 export const getCreatorCourses = async (req,res) => {
     try {
         const userId = req.id;
         const courses = await Course.find({creator:userId});
-        if(courses.length === 0){
+        if(!courses){
             return res.status(404).json({
                 courses:[],
                 message:"Course not found"
@@ -67,8 +128,7 @@ export const editCourse = async (req,res) => {
                 await deleteMediaFromCloudinary(publicId); // delete old image
             }
             // upload a thumbnail on clourdinary
-            courseThumbnail = await uploadMedia
-            (thumbnail.path);
+            courseThumbnail = await uploadMedia(thumbnail.path);
         }
 
  
@@ -109,6 +169,7 @@ export const getCourseById = async (req,res) => {
         })
     }
 }
+
 export const createLecture = async (req,res) => {
     try {
         const {lectureTitle} = req.body;
@@ -141,7 +202,6 @@ export const createLecture = async (req,res) => {
         })
     }
 }
-
 export const getCourseLecture = async (req,res) => {
     try {
         const {courseId} = req.params;
@@ -249,3 +309,31 @@ export const getLectureById = async (req,res) => {
     }
 }
 
+
+// publich unpublish course logic
+
+export const togglePublishCourse = async (req,res) => {
+    try {
+        const {courseId} = req.params;
+        const {publish} = req.query; // true, false
+        const course = await Course.findById(courseId);
+        if(!course){
+            return res.status(404).json({
+                message:"Course not found!"
+            });
+        }
+        // publish status based on the query paramter
+        course.isPublished = publish === "true";
+        await course.save();
+
+        const statusMessage = course.isPublished ? "Published" : "Unpublished";
+        return res.status(200).json({
+            message:`Course is ${statusMessage}`
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message:"Failed to update status"
+        })
+    }
+}
