@@ -99,7 +99,7 @@ const Navbar = () => {
           ) : (
             <div className="fixed top-4 right-4 z-50 flex gap-2 ">
               
-              <Button variant="outline" className="text-black" onClick={() => navigate("/login")}>Login</Button>
+              <Button variant="outline" className="text-black dark:text-white" onClick={() => navigate("/login")}>Login</Button>
               <Button  onClick={() => navigate("/login")}>Signup</Button>
             </div>
           )}
@@ -110,7 +110,7 @@ const Navbar = () => {
       {/*Mobile device*/}
       <div className="flex md:hidden items-center justify-between px-4 h-full">
         <h1 className="font-extrabold text-2xl">E-learning</h1>
-        <MobileNavbar />
+        <MobileNavbar user={user} />
       </div>
     </div>
   );
@@ -118,8 +118,9 @@ const Navbar = () => {
 
 export default Navbar;
 
-const MobileNavbar = () => {
+const MobileNavbar = ({user}) => {
   const role = "instructor";
+  const navigate =useNavigate();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -133,19 +134,19 @@ const MobileNavbar = () => {
       </SheetTrigger>
       <SheetContent className="flex flex-col dark:bg-gray-600 ">
         <SheetHeader className="flex flex-row items-center justify-between mt-2">
-          <SheetTitle>E-Learning</SheetTitle>
+          <SheetTitle><Link to="/">E-Learning</Link></SheetTitle>
           <DarkMode />
         </SheetHeader>
         <Separator className="mr-2" />
         <nav className="flex flex-col space-y-4 bg-[#BBFBFF]">
-          <span>My Learning</span>
-          <span>Edit Profile</span>
+          <Link to="/my-learning">My Learning</Link>
+          <Link to="/profile">Edit Profile</Link>
           <p>Logout</p>
         </nav>
-        {role === "instructor" && (
+        {user?.role === "instructor" && (
           <SheetFooter>
             <SheetClose asChild>
-              <Button type="submit" className="">Dashboard</Button>
+              <Button type="submit" onclick={() => navigate("/admin/dashboard")}className="">Dashboard</Button>
             </SheetClose>
           </SheetFooter>
         )}
