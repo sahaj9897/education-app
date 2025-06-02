@@ -78,16 +78,16 @@ const CourseProgress = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-7xl mx-auto p-4 bg-[#D9EAFD] dark:bg-[oklch(0.129_0.042_264.695)] rounded-lg">
       {/* Display course name  */}
       <div className="flex justify-between mb-4">
         <h1 className="text-2xl font-bold">{courseTitle}</h1>
-        <Button
+        <Button className="m-4"
           onClick={completed ? handleInCompleteCourse : handleCompleteCourse}
           variant={completed ? "outline" : "default"}
         >
           {completed ? (
-            <div className="flex items-center">
+            <div className="flex items-center ">
               <CheckCircle className="h-4 w-4 mr-2" /> <span>Completed</span>{" "}
             </div>
           ) : (
@@ -137,7 +137,7 @@ const CourseProgress = () => {
                 } `}
                 onClick={() => handleSelectLecture(lecture)}
               >
-                <CardContent className="flex items-center justify-between p-4">
+                <CardContent className="flex items-center justify-between p-0 ml-4">
                   <div className="flex items-center">
                     {isLectureCompleted(lecture._id) ? (
                       <CheckCircle2 size={24} className="text-green-500 mr-2" />
@@ -153,7 +153,7 @@ const CourseProgress = () => {
                   {isLectureCompleted(lecture._id) && (
                     <Badge
                       variant={"outline"}
-                      className="bg-green-200 text-green-600"
+                      className="bg-green-200 text-green-600 mr-4"
                     >
                       Completed
                     </Badge>

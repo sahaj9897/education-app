@@ -5,7 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 const Sidebar = () => {
   return (
     <div className="flex">
-      <div className="hidden lg:block w-[250px] sm:w-[300px] space-y-8 border-r border-gray-300 dark:border-gray-700  p-5 sticky top-0  h-screen">
+      <div className="hidden lg:block w-[250px] sm:w-[300px] space-y-8 border-r bg-gradient-to-b from-[#1E90FF] to-[#1877CD] border-gray-300 dark:border-gray-700 dark:from-gray-700 dark:to-gray-800 p-5 sticky top-0  h-screen">
         <div className="space-y-4 ">
           <Link to="dashboard" className="flex items-center gap-2">
             <ChartNoAxesColumn size={22} />

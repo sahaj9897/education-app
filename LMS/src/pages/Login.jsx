@@ -88,7 +88,7 @@ const Login = () => {
   ]);
 
   return (
-  <div className="min-h-screen flex justify-center items-center p-8 bg-[#a1d5c5]">
+  <div className="min-h-screen flex justify-center items-center p-8 bg-[#D9EAFD] dark:bg-[oklch(0.129_0.042_264.695)] -mt-8">
     <div className="group relative">
   <div className="w-[26rem] bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 transition-all duration-300 ease-in-out transform group-hover:scale-105 group-hover:shadow-2xl">
 
@@ -101,7 +101,7 @@ const Login = () => {
           className="flex flex-col"
           noValidate
         >
-          <h2 className="text-center text-2xl font-semibold mb-6 text-[#00008A]">
+          <h2 className="text-center text-2xl font-semibold mb-6 text-[#00008A] dark:text-white">
             Sign Up
           </h2>
 
@@ -164,7 +164,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setIsSignUpMode(false)}
-              className="text-[#00008A] font-semibold hover:underline"
+              className="text-[#00008A] font-semibold hover:underline dark:text-white"
             >
               Sign in here
             </button>
@@ -179,7 +179,7 @@ const Login = () => {
           className="flex flex-col"
           noValidate
         >
-          <h2 className="text-center text-2xl font-semibold mb-6 text-[#00008A]">
+          <h2 className="text-center text-2xl font-semibold mb-6 dark:text-white text-[#00008A]">
             Sign In
           </h2>
 
@@ -217,7 +217,7 @@ const Login = () => {
           >
             {loginIsLoading ? (
               <>
-                <Loader2 className="mr-2 animate-spin" size={16} />
+                <Loader2 className="mr-2 animate-spin " size={16} />
                 Please wait...
               </>
             ) : (
@@ -230,7 +230,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setIsSignUpMode(true)}
-              className="text-[#00008A] font-semibold hover:underline"
+              className="text-[#00008A] font-semibold hover:underline dark:text-white"
             >
               Sign up here
             </button>

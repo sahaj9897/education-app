@@ -147,6 +147,7 @@ const CourseTab = () => {
             <Label>Title</Label>
             <Input
               type="text"
+              className="mt-2"
               name="courseTitle"
               value={input.courseTitle}
               onChange={changeEventHandler}
@@ -157,6 +158,7 @@ const CourseTab = () => {
             <Label>Subtitle</Label>
             <Input
               type="text"
+              className="mt-2"
               name="subTitle"
               value={input.subTitle}
               onChange={changeEventHandler}
@@ -164,12 +166,12 @@ const CourseTab = () => {
             />
           </div>
           <div>
-            <Label>Description</Label>
+            <Label className="mb-2">Description</Label>
             <RichTextEditor input={input} setInput={setInput} />
           </div>
           <div className="flex items-center gap-5">
             <div>
-              <Label>Category</Label>
+              <Label className="mb-2">Category</Label>
               <Select
                 defaultValue={input.category}
                 onValueChange={selectCategory}
@@ -201,7 +203,7 @@ const CourseTab = () => {
               </Select>
             </div>
             <div>
-              <Label>Course Level</Label>
+              <Label className="mb-2">Course Level</Label>
               <Select
                 defaultValue={input.courseLevel}
                 onValueChange={selectCourseLevel}
@@ -220,7 +222,7 @@ const CourseTab = () => {
               </Select>
             </div>
             <div>
-              <Label>Price in (INR)</Label>
+              <Label className="mb-2">Price in (INR)</Label>
               <Input
                 type="number"
                 name="coursePrice"
@@ -232,7 +234,7 @@ const CourseTab = () => {
             </div>
           </div>
           <div>
-            <Label>Course Thumbnail</Label>
+            <Label className="mb-2">Course Thumbnail</Label>
             <Input
               type="file"
               onChange={selectThumbnail}
@@ -247,7 +249,7 @@ const CourseTab = () => {
               />
             )}
           </div>
-          <div>
+          <div className="mt-8">
             <Button onClick={() => navigate("/admin/course")} variant="outline">
               Cancel
             </Button>

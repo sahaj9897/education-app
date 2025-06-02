@@ -35,8 +35,8 @@ const CourseDetail = () => {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="bg-[#2D2F31] text-white">
+    <div className="space-y-5 dark:bg-[oklch(0.129_0.042_264.695)] bg-[#D9EAFD]">
+      <div className="bg-gray-700 text-white">
         <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 flex flex-col gap-2">
           <h1 className="font-bold text-2xl md:text-3xl">
             {course?.courseTitle}
@@ -62,7 +62,7 @@ const CourseDetail = () => {
             className="text-sm"
             dangerouslySetInnerHTML={{ __html: course.description }}
           />
-          <Card>
+          <Card className="bg-gray-500 text-white">
             <CardHeader>
               <CardTitle>Course Content</CardTitle>
               <CardDescription>4 lectures</CardDescription>
@@ -80,7 +80,7 @@ const CourseDetail = () => {
           </Card>
         </div>
         <div className="w-full lg:w-1/3">
-          <Card>
+          <Card className="bg-gray-500 text-white mt-4 mb-10">
             <CardContent className="p-4 flex flex-col">
               <div className="w-full aspect-video mb-4">
                 <ReactPlayer

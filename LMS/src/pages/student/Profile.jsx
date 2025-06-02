@@ -70,7 +70,8 @@ const Profile = () => {
   const {user} = data //&& data.user;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 my-10">
+    <div className="min-h-screen bg-[#D9EAFD] dark:bg-[oklch(0.129_0.042_264.695)] w-full">
+    <div className="max-w-4xl mx-auto px-4 py-10 ">
       <h1 className="font-bold text-2xl text-center md:text-left">PROFILE</h1>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 my-5">
         <div className="flex flex-col items-center">
@@ -83,7 +84,7 @@ const Profile = () => {
           <div className="mb-2">
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Name:
-              <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300 ml-2">
                 {user.name}
               </span>
             </h1>
@@ -91,7 +92,7 @@ const Profile = () => {
           <div className="mb-2">
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Email:
-              <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300 ml-2">
                 {user.email}
               </span>
             </h1>
@@ -99,7 +100,7 @@ const Profile = () => {
           <div className="mb-2">
             <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
               Role:
-              <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300 ml-2">
                 {user.role}
               </span>
             </h1>
@@ -162,6 +163,7 @@ const Profile = () => {
         </div>
          
       </div>
+    </div>
     </div>
   );
 };
