@@ -7,6 +7,7 @@ import courseRoute from "./routes/course.route.js";
 import mediaRoute from "./routes/media.route.js";
 import purchaseRoute from "./routes/purchaseCourse.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js"
+import { stripeWebhook } from "./controllers/coursePurchase.controller.js";
 import cors from "cors";
 const app = express();
 
@@ -14,7 +15,11 @@ dotenv.config({});
 connectDB();
 
 const PORT = process.env.PORT || 3000 ;
-
+app.post(
+  "/api/v1/purchase/webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
