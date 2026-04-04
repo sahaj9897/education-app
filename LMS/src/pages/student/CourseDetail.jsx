@@ -29,14 +29,14 @@ const CourseDetail = () => {
   console.log(purchased);
 
   const handleContinueCourse = () => {
-    if(purchased){
-      navigate(`/course-progress/${courseId}`)
+    if (purchased) {
+      navigate(`/course-progress/${courseId}`);
     }
-  }
+  };
 
   return (
     <div className="space-y-5 dark:bg-[oklch(0.129_0.042_264.695)] bg-[#D9EAFD]">
-      <div className="bg-gray-700 text-white">
+      <div className="bg-gradient-to-r from-blue-500 to bg-indigo-600 dark:from-gray-800 dark:to-gray-900 text-white">
         <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 flex flex-col gap-2">
           <h1 className="font-bold text-2xl md:text-3xl">
             {course?.courseTitle}
@@ -62,10 +62,13 @@ const CourseDetail = () => {
             className="text-sm"
             dangerouslySetInnerHTML={{ __html: course.description }}
           />
-          <Card className="bg-gray-500 text-white">
+          <Card className="bg-blue-500 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 text-white">
             <CardHeader>
               <CardTitle>Course Content</CardTitle>
-              <CardDescription>4 lectures</CardDescription>
+              <CardDescription className="text-white">
+                {course?.lectures?.length || 0}{" "}
+                {course?.lectures?.length === 1 ? "lecture" : "lectures"}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {course.lectures.map((lecture, idx) => (
@@ -80,7 +83,7 @@ const CourseDetail = () => {
           </Card>
         </div>
         <div className="w-full lg:w-1/3">
-          <Card className="bg-gray-500 text-white mt-4 mb-10">
+          <Card className="bg-blue-500 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 text-white mt-4 mb-10">
             <CardContent className="p-4 flex flex-col">
               <div className="w-full aspect-video mb-4">
                 <ReactPlayer
@@ -96,7 +99,9 @@ const CourseDetail = () => {
             </CardContent>
             <CardFooter className="flex justify-center p-4">
               {purchased ? (
-                <Button onClick={handleContinueCourse} className="w-full">Continue Course</Button>
+                <Button onClick={handleContinueCourse} className="w-full">
+                  Continue Course
+                </Button>
               ) : (
                 <BuyCourseButton courseId={courseId} />
               )}

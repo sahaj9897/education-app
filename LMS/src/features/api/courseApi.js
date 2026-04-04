@@ -18,6 +18,9 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ["Refetch_Creator_Course"],
     }),
+    getLectureAINotes: builder.query({
+      query: (lectureId) => `/lecture/${lectureId}/notes`,
+    }),
     getSearchCourse:builder.query({
       query: ({searchQuery, categories, sortByPrice}) => {
         // Build qiery string
@@ -128,4 +131,5 @@ export const {
   useRemoveLectureMutation,
   useGetLectureByIdQuery,
   usePublishCourseMutation,
+  useGetLectureAINotesQuery,
 } = courseApi;
