@@ -218,6 +218,6 @@ This project is currently unlicensed. Feel free to open an issue if you'd like a
 
 <div align="center">
 
-Built with ❤️ by [Sahaj Jot Singh](https://github.com/sahaj9897)
+ 
 
 </div>
