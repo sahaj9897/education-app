@@ -14,7 +14,7 @@ export const createCheckoutSession = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found!" });
 
-    // Create a new course purchase record
+     
     const newPurchase = new CoursePurchase({
       courseId,
       userId,
@@ -22,7 +22,7 @@ export const createCheckoutSession = async (req, res) => {
       status: "pending",
     });
 
-    // Create a Stripe checkout session
+     
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -33,20 +33,20 @@ export const createCheckoutSession = async (req, res) => {
               name: course.courseTitle,
               images: [course.courseThumbnail],
             },
-            unit_amount: course.coursePrice * 100, // Amount in paise (lowest denomination)
+            unit_amount: course.coursePrice * 100,  
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `http://localhost:5173/course-progress/${courseId}`, // once payment successful redirect to course progress page
-      cancel_url: `http://localhost:5173/course-detail/${courseId}`,
+      success_url: `https://education-app-bay.vercel.app/course-progress/${courseId}`,  
+      cancel_url: `https://education-app-bay.vercel.app/course-detail/${courseId}`,
       metadata: {
         courseId: courseId,
         userId: userId,
       },
       shipping_address_collection: {
-        allowed_countries: ["IN"], // Optionally restrict allowed countries
+        allowed_countries: ["IN"],  
       },
     });
 
@@ -56,13 +56,13 @@ export const createCheckoutSession = async (req, res) => {
         .json({ success: false, message: "Error while creating session" });
     }
 
-    // Save the purchase record
+     
     newPurchase.paymentId = session.id;
     await newPurchase.save();
 
     return res.status(200).json({
       success: true,
-      url: session.url, // Return the Stripe checkout URL
+      url: session.url,  
     });
   } catch (error) {
     console.log(error);

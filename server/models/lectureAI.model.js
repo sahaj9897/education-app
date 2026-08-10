@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const lectureAISchema = new mongoose.Schema({
   lectureId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Lecture", // Ties directly to your existing Lecture model
+    ref: "Lecture",  
     required: true,
     unique: true, 
   },

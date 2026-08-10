@@ -75,7 +75,7 @@ export const login = async (req, res) => {
     });
   }
 };
-// _ means it is not used so intentially we put _
+ 
 export const logout = async (_, res) => {
   try { //
     return res.status(200).cookie("token", "", { maxAge: 0 }).json({
@@ -125,15 +125,14 @@ export const updateProfile = async (req,res) => {
               success:false
           }) 
       }
-      // extract public id of the old image from the url is it exists;
+       
       if(user.photoUrl){
           const publicId = user.photoUrl.split("/").pop().split(".")[0]; 
-          //https://res.cloudinary.com/demo/image/upload/v1234567/public_id.jpg
-          // this is how url look like in ourexample we first convert it into array take last element and from that remove jpg and get final public id
+           
           deleteMediaFromCloudinary(publicId);
       }
 
-      // upload new photo
+       
       const cloudResponse = await uploadMedia(profilePhoto.path);
       const photoUrl = cloudResponse.secure_url;
 

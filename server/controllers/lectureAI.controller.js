@@ -3,20 +3,15 @@ import { Lecture } from "../models/lecture.model.js";
 import { LectureAI } from "../models/lectureAI.model.js";
 import { GoogleGenAI } from "@google/genai";
 
-/* ----------------------------------
-   CLOUDINARY: video → audio
------------------------------------*/
+ 
 const getAudioUrlFromVideo = (videoUrl) => {
-  console.log("🎧 Converting video to audio URL");
-  // Ensure we are only replacing the upload segment correctly
+   
+  
   return videoUrl.replace("/upload/", "/upload/f_mp3/q_auto/");
 };
-
-/* ----------------------------------
-   GLADIA: Transcription Helpers
------------------------------------*/
+ 
 const startGladiaTranscription = async (audioUrl) => {
-  console.log("📝 Starting Gladia transcription");
+  
   const res = await axios.post(
     "https://api.gladia.io/v2/pre-recorded",
     { audio_url: audioUrl },
@@ -31,7 +26,7 @@ const startGladiaTranscription = async (audioUrl) => {
 };
 
 const pollGladiaResult = async (resultUrl) => {
-  console.log("⏳ Polling Gladia transcription result");
+   
   while (true) {
     const res = await axios.get(resultUrl, {
       headers: { "x-gladia-key": process.env.GLADIA_API_KEY },
@@ -57,13 +52,11 @@ const transcribeWithGladia = async (audioUrl) => {
   return pollGladiaResult(resultUrl);
 };
 
-/* ----------------------------------
-   GEMINI: Generation
------------------------------------*/
+ 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINIPRO_API_KEY });
 
 const generateNotesWithGemini = async (transcript) => {
-  console.log("🤖 Sending transcript to Gemini");
+   
   const prompt = `
 You are an expert AI teaching assistant. Your task is to analyze the following video transcript.
 
@@ -96,16 +89,14 @@ ${transcript}
 """`;
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash", // Updated to the stable Flash model
+    model: "gemini-2.5-flash",  
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     config: { temperature: 0.4, maxOutputTokens: 4096 },
   });
   return response.candidates[0].content.parts[0].text;
 };
 
-/* ----------------------------------
-   BACKGROUND WORKER
------------------------------------*/
+ 
 export const processLectureAI = async (lectureId) => {
   try {
     const existing = await LectureAI.findOne({ lectureId });
@@ -117,7 +108,7 @@ export const processLectureAI = async (lectureId) => {
       { upsert: true },
     );
 
-    // Fetch the actual lecture document from your DB
+     
     const lecture = await Lecture.findById(lectureId);
     if (!lecture || !lecture.videoUrl)
       throw new Error("Lecture or video not found");
@@ -130,27 +121,25 @@ export const processLectureAI = async (lectureId) => {
       { lectureId },
       { transcript, notes, status: "done" },
     );
-    console.log("✅ AI notes saved successfully");
+    
   } catch (err) {
-    console.error("❌ Lecture AI error:", err.message);
+     
     await LectureAI.findOneAndUpdate({ lectureId }, { status: "error" });
   }
 };
 
-/* ----------------------------------
-   STUDENT API ENDPOINT
------------------------------------*/
+ 
 export const getLectureNotes = async (req, res) => {
   try {
     const { lectureId } = req.params;
 
     let data = await LectureAI.findOne({ lectureId });
 
-    // Lazy trigger
+     
     if (!data) {
-      console.log("🚀 Triggering AI generation for lecture:", lectureId);
-      processLectureAI(lectureId); // Runs in background (no await)
-      return res.status(202).json({ status: "processing" }); // 202 Accepted
+       
+      processLectureAI(lectureId);  
+      return res.status(202).json({ status: "processing" });  
     }
 
     if (data.status === "processing") {
